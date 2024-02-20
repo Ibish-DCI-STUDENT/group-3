@@ -10,20 +10,27 @@ class CourseDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
-class PriceFilteredCourseList(generics.ListAPIView):
+class CourseFilteredList(generics.ListAPIView):
     serializer_class = CourseSerializer
 
     def get_queryset(self):
         queryset = Course.objects.all()
 
-        # Filter courses by price range if provided in the request parameters
         min_price = self.request.query_params.get('min_price')
         max_price = self.request.query_params.get('max_price')
+        instructor = self.request.query_params.get('instructor')
+        duration = self.request.query_params.get('duration')
 
         if min_price is not None:
             queryset = queryset.filter(price__gte=min_price)
 
         if max_price is not None:
             queryset = queryset.filter(price__lte=max_price)
+
+        if instructor is not None:
+            queryset = queryset.filter(instructor=instructor)
+
+        if duration is not None:
+            queryset = queryset.filter(duration=duration)
 
         return queryset
