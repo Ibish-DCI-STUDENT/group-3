@@ -21,13 +21,14 @@
             <ul>
                 <li><a href="{% url 'frontend_courses:home' %}">Home</a></li>
                 <li><a href="{% url 'frontend_courses:course_list' %}">Course List</a></li>
-                <li><a href="{% url 'filters:filter' %}">Filter Course</a></li>
+                <li><a href="{% url 'filters:filter' %}">Compare Course</a></li>
 
             </ul>
         </nav>
     </header>
 
     {% block home %}{% endblock %}
+    
 
     {% block list %}{% endblock %}
     {% block details %}{% endblock %}
