@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "rest_framework",
     "frontend_courses.apps.FrontendCoursesConfig",
+    "filters.apps.FiltersConfig",
 ]
 
 MIDDLEWARE = [

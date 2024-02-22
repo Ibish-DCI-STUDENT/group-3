@@ -1,0 +1,64 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Your Filter Page</title>
+
+    <!-- Bootstrap 4 CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body class="bg-light">
+    <div class="container bg-light p-4">
+
+        <form method="get">
+            <div class="form-group col-md-6">
+                <label for="{{ form.min_price.id_for_label }}">Min Price:</label>
+                <input type="number" id="{{ form.min_price.id_for_label }}" name="{{ form.min_price.html_name }}" value="{{ form.min_price.value|default:'' }}" class="form-control form-control-sm">
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="{{ form.max_price.id_for_label }}">Max Price:</label>
+                <input type="number" id="{{ form.max_price.id_for_label }}" name="{{ form.max_price.html_name }}" value="{{ form.max_price.value|default:'' }}" class="form-control form-control-sm">
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="{{ form.instructor.id_for_label }}">Instructor:</label>
+                <input type="text" id="{{ form.instructor.id_for_label }}" name="{{ form.instructor.html_name }}" value="{{ form.instructor.value|default:'' }}" class="form-control form-control-sm">
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="{{ form.duration.id_for_label }}">Duration:</label>
+                <input type="text" id="{{ form.duration.id_for_label }}" name="{{ form.duration.html_name }}" value="{{ form.duration.value|default:'' }}" class="form-control form-control-sm">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </form>
+        {% if items %}
+            <h2 style="color: blue;">Filtered Items:</h2>
+            <div class="list-group">
+                {% for item in items %}
+                    <div class="list-group-item" style="margin-bottom: 10px;">
+                        <h5 class="mb-1" style="color: green;">{{ item.name }}</h5>
+                        <p class="mb-1"><strong style="color: red;">Instructor:</strong> {{ item.instructor }}</p>
+                        <p class="mb-1"><strong style="color: orange;">Duration:</strong> {{ item.duration }}</p>
+                        <p class="mb-1"><strong style="color: purple;">Price:</strong> {{ item.price }}</p>
+                        <!-- Add more fields as needed -->
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info mt-3" role="alert">
+                No items match the filter criteria.
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap 4 JS and Popper.js CDN -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
+
