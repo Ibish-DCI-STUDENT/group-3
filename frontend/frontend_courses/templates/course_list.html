@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+   
+
+{% block list %}
+    <h1>Course List</h1>
+    <p>Here are all the available courses:</p>
+    <ul>
+        {% for course in course_list %}
+        <li><a href="{% url 'frontend_courses:course_detail' course.id %}">{{ course.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
