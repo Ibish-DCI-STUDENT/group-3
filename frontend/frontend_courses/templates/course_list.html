@@ -3,6 +3,10 @@
    
 
 {% block list %}
+<link rel="stylesheet" href ="{% static 'customstyle.css' %}">
+
+
+<section class="list-section">
     <h1>Course List</h1>
     <p>Here are all the available courses:</p>
     <ul>
@@ -10,4 +14,5 @@
         <li><a href="{% url 'frontend_courses:course_detail' course.id %}">{{ course.name }}</a></li>
         {% endfor %}
     </ul>
+</section>
 {% endblock %}

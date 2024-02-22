@@ -63,5 +63,37 @@
    margin: 0 auto;
    padding: 20px;
    margin-bottom: 20px;
+   color: white;
+}
 
+.list-section {
+   background-color: rgba(0, 0, 0, 0.3);
+   backdrop-filter: blur(15px);
+   border-radius: 10px;
+   max-width: 600px;
+   margin: 0 auto;
+   padding: 20px;
+   margin-bottom: 20px;
+   color: white;
+}
+
+
+.list-section a {
+   color: white;
+   text-decoration: none;
+}
+
+.list-section a:hover {
+   text-decoration: underline;
+}
+
+.details-section {
+   background-color: rgba(0, 0, 0, 0.3);
+   backdrop-filter: blur(15px);
+   border-radius: 10px;
+   max-width: 600px;
+   margin: 0 auto;
+   padding: 20px;
+   margin-bottom: 20px;
+   color: white;
 }
