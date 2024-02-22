@@ -2,11 +2,12 @@
 {% load static %}
 
 {% block details %}
-<link rel="stylesheet" href ="{% static 'customstyle.css' %}">
+<link rel="stylesheet" href="{% static 'customstyle.css' %}">
 
 
 <section class="details-section">
     <h1>Course Details</h1>
+
     <p>Here are the details for the course:</p>
     <h2>{{ course.name }}</h2>
     <p>{{ course.description }}</p>
@@ -14,5 +15,7 @@
     <p>Instructor: {{ course.instructor }}</p>
     <p>Duration: {{ course.duration }}</p>
     <p>Published on: {{course.published_date}}</p>
-</section>   
+    <a class="btn btn-primary btn-lg" href="{% url 'forms:edit_course' course.id %}">Edit</a>
+    <a class="btn btn-primary btn-lg" href="{% url 'forms:delete_course' course.id %}">Delete</a>
+</section>
 {% endblock %}

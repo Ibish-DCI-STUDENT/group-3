@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("frontend_courses.urls")),
     path("filters", include("filters.urls")),
+    path("", include("forms.urls")),
 ]
