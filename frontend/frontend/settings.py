@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "frontend_courses.apps.FrontendCoursesConfig",
     "filters.apps.FiltersConfig",
-    "forms.apps.FormsConfig"
+    "forms.apps.FormsConfig",
+    "accounts.apps.AccountsConfig",
+    "posts.apps.PostsConfig",
 ]
 
 MIDDLEWARE = [
@@ -128,6 +130,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+AUTH_USER_MODEL = "accounts.CustomUser"
+LOGIN_REDIRECT_URL = "frontend_courses:home"
+LOGOUT_REDIRECT_URL = "frontend_courses:home"
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
