@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     "filters.apps.FiltersConfig",
     "forms.apps.FormsConfig",
     "accounts.apps.AccountsConfig",
-    "posts.apps.PostsConfig",
+
 ]
 
 MIDDLEWARE = [
