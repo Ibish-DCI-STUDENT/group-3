@@ -10,7 +10,7 @@ from .forms import AddCourseForm
 class AddCourseView(FormView):
     template_name = 'add_new_course.html'
     form_class = AddCourseForm
-    success_url = reverse_lazy('frontrnd_courses: course_list')
+    success_url = reverse_lazy('frontend_courses:course_list')
 
     def form_valid(self, form):
         # Prepare data from the form
@@ -24,12 +24,11 @@ class AddCourseView(FormView):
         }
 
         # Send a POST request to the API to add the data
-        response = requests.post('"http://127.0.0.1:8000/api/items"', data=api_data)
+        response = requests.post("http://127.0.0.1:8000/api/items/", data=api_data)
 
         if response.status_code == 201:  # Assuming the API returns 201 for successful creation
             return super().form_valid(form)
         else:
-         
             return HttpResponseServerError('An error occurred while adding the course')
         
 class EditCourseView(View):
@@ -57,7 +56,7 @@ class EditCourseView(View):
                 form_data = form.cleaned_data  
                 update_response = requests.put(self.api_url.format(pk), data=form_data)
                 if update_response.status_code == 200:
-                    return redirect('course_list')  
+                    return redirect('frontend_courses:course_list')  
                 else:
                     return HttpResponseServerError('An error occurred')
             else:
@@ -77,7 +76,9 @@ class DeleteCourseView(View):
         # Check if the user confirmed the deletion
         if 'confirm_delete' in request.POST:
             # Send a DELETE request to the API
+            print("PK value:", pk)
             response = requests.delete(self.api_url.format(pk))
+            print(response.text)
             if response.status_code == 204:
-                return redirect('course_list')
-        return redirect('course_list')
+                return redirect('frontend_courses:course_list')
+        return HttpResponseServerError('An error occurred')
