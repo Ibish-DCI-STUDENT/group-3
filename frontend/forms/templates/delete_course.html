@@ -4,8 +4,10 @@
 <link rel="stylesheet" href="{% static 'customstyle.css' %}">
 
 <h1>Delete</h1>
-<form action="" method="post">{% csrf_token %}
-    <p>Are you sure you want to delete it?</p>
-    <button class="btn btn-danger ml-2" type="submit">Confirm</button>
+
+<form method="post">
+    {% csrf_token %}
+    <input type="submit" name="confirm_delete" value="Confirm Delete">
 </form>
+
 {% endblock content %}
