@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{% static 'customstyle.css' %}">
 
 <h1>Edit</h1>
-<form action="" method="post" style="width: 50%; margin-left: 20%;">
+<form action="" method="post" style="width: 35%; margin-left: 20%;">
     {% csrf_token %}
     {{ form | crispy }}
     <input type="submit" value="Save">
