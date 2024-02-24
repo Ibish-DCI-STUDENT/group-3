@@ -4,7 +4,6 @@
 {% block details %}
 <link rel="stylesheet" href="{% static 'customstyle.css' %}">
 
-
 <section class="details-section">
     <h1>Course Details</h1>
 
@@ -15,7 +14,9 @@
     <p>Instructor: {{ course.instructor }}</p>
     <p>Duration: {{ course.duration }}</p>
     <p>Published on: {{course.published_date}}</p>
-    <a class="btn btn-primary btn-lg" href="{% url 'forms:edit_course' course.id %}">Edit</a>
-    <a class="btn btn-primary btn-lg" href="{% url 'forms:delete_course' course.id %}">Delete</a>
+    {% if request.user.is_staff %}
+        <a class="btn btn-primary btn-lg" href="{% url 'forms:edit_course' course.id %}">Edit</a>
+        <a class="btn btn-primary btn-lg" href="{% url 'forms:delete_course' course.id %}">Delete</a>
+    {% endif %}
 </section>
 {% endblock %}

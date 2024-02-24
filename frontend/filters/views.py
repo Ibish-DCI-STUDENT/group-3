@@ -20,3 +20,4 @@ def filter_view(request):
                 items = response.json()
 
     return render(request, 'filter.html', {'form': form, 'items': items})
+

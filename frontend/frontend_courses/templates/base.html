@@ -25,9 +25,12 @@
                 <li><a href="{% url 'frontend_courses:home' %}">Home</a></li>
                 <li><a href="{% url 'frontend_courses:course_list' %}">Course List</a></li>
                 <li><a href="{% url 'filters:filter' %}">Compare Course</a></li>
-                <li><form method="post" action="{% url 'logout' %}">{% csrf_token %}
-                    <button type="submit" class="btn btn-link">Log Out</button>
-                </form></li>
+                <li>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Log Out</button>
+                    </form>
+                </li>
 
             {% else %}
                 <li><a href="{% url 'login' %}">Log In</a></li>

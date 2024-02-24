@@ -5,12 +5,12 @@ from .serializers import CourseSerializer
 class CourseList(generics.ListCreateAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
-    #permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
 
 class CourseDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
-    #permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    #permission_classes = [permissions.IsAdminUser]
 
 class CourseFilteredList(generics.ListAPIView):
     serializer_class = CourseSerializer
