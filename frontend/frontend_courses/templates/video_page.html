@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block details %}
+<link rel="stylesheet" href="{% static 'customstyle.css' %}">
+
+<section class="video">
+    {% if course %}
+        <h2>Course Name: {{ course.name }}</h2>
+        <p>Course Description: {{ course.description }}</p>
+
+        {% if course.course_video %}
+            <video controls width="800" height="600">
+                <source src="{{ course.course_video }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        {% else %}
+            <p>No video available for the selected course</p>
+        {% endif %}
+    {% else %}
+        <p>Error retrieving course information</p>
+    {% endif %}
+</section>
+
+<section class="details-section">
+    <p>Instructor: {{ course.instructor }}</p>
+    <p>Duration: {{ course.duration }}</p>
+    <p>Published on: {{ course.published_date }}</p>
+    <p>Course Rating: 
+    {% for i in stars_range %}
+        {% if i <= course.course_rating|default:"0"|add:0 %}
+            <span>&#9733;</span> <!-- filled star -->
+        {% else %}
+            <span>&#9734;</span> <!-- empty star -->
+        {% endif %}
+    {% endfor %}
+</p>
+</section>
+{% endblock %}

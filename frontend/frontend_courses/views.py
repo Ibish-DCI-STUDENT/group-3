@@ -5,15 +5,43 @@ from django.http import HttpResponse
 from django.shortcuts import render
 import json
 import requests
+from django.shortcuts import get_object_or_404
 
 
 class HomeView(TemplateView):
     template_name = "home.html"
-    # def get_context_data(self);
-    #     context = {}
+    
+class VideoTemplate(TemplateView):
+    template_name = "video_page.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["url_home_page"] = reverse("frontend_courses:home")
+        context["url_course_list"] = reverse("frontend_courses:course_list")
+
+        course_id = kwargs.get('video_id')  # Assuming the parameter is named video_id
+        
+        try:
+            # Update the API URL to include the course_id
+            response = requests.get(f"http://127.0.0.1:8000/api/items/{course_id}/")
+            response.raise_for_status()
+            data = response.json()
+            
+            # Assuming the API response is a single course
+            context["course"] = data if data else None
+        except requests.RequestException as e:
+            # Log the error or handle it appropriately
+            print(f"Error fetching course information: {e}")
+            
+            context["course"] = None
+            
+        context["stars_range"] = range(1, 6)
+        
+        return context
+    
 class CourseList(TemplateView):
     template_name = "course_list.html"
+    
 
     def get_context_data(self, **kwargs):
         url_home_page = reverse("frontend_courses:home")
