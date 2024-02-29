@@ -22,18 +22,18 @@
     {% endif %}
 </section>
 
-<section class="details-section">
+<section class="details-section" style="float: left;">
     <p>Instructor: {{ course.instructor }}</p>
     <p>Duration: {{ course.duration }}</p>
     <p>Published on: {{ course.published_date }}</p>
     <p>Course Rating: 
-    {% for i in stars_range %}
-        {% if i <= course.course_rating|default:"0"|add:0 %}
-            <span>&#9733;</span> <!-- filled star -->
-        {% else %}
-            <span>&#9734;</span> <!-- empty star -->
-        {% endif %}
-    {% endfor %}
-</p>
+        {% for i in stars_range %}
+            {% if i <= course.course_rating|default:"0"|add:0 %}
+                <span>&#9733;</span> <!-- filled star -->
+            {% else %}
+                <span>&#9734;</span> <!-- empty star -->
+            {% endif %}
+        {% endfor %}
+    </p>
 </section>
 {% endblock %}
