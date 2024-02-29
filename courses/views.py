@@ -14,7 +14,7 @@ class CourseDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class CourseFilteredList(generics.ListAPIView):
     serializer_class = CourseSerializer
-    permission_classes = [permissions.AllowAny]
+    #permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
         queryset = Course.objects.all()

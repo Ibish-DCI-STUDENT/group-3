@@ -39,9 +39,12 @@ class DetailView(TemplateView):
             if course["id"]==course_id:
                 course_info=course
             else:
-                pass                    
+                pass
+            
+        stars_range = range(1, 6)  # Add this line
+                    
         # course_data = models.Course.objects.get(name=course_name)
-        context = {"url_home_page": url_home_page, "url_course_list": url_course_list, "course": course_info}
+        context = {"url_home_page": url_home_page, "url_course_list": url_course_list, "course": course_info,"stars_range": stars_range,}
         return context
 
 

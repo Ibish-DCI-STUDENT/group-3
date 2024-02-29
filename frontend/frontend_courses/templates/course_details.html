@@ -8,12 +8,33 @@
     <h1>Course Details</h1>
 
     <p>Here are the details for the course:</p>
+    {% if course.course_image %}
+        <img src="{{ course.course_image }}" alt="{{ course.name }}" class="course-image" width="300" height="200">
+
+    {% else %}
+        <p>No image available</p>
+    {% endif %}
     <h2>{{ course.name }}</h2>
     <p>{{ course.description }}</p>
-    <p>Cost: {{ course.price }}€</p>
+    {% if course.is_free %}
+        <p>Is Free</p>
+    {% else %}
+        <p>Cost: {{ course.price }}€</p>
+    {% endif %}
     <p>Instructor: {{ course.instructor }}</p>
     <p>Duration: {{ course.duration }}</p>
     <p>Published on: {{course.published_date}}</p>
+   <p>Course Rating: 
+    {% for i in stars_range %}
+        {% if i <= course.course_rating|default:"0"|add:0 %}
+            <span>&#9733;</span> <!-- filled star -->
+        {% else %}
+            <span>&#9734;</span> <!-- empty star -->
+        {% endif %}
+    {% endfor %}
+</p>
+</p>
+
     {% if request.user.is_staff %}
         <a class="btn btn-primary btn-lg" href="{% url 'forms:edit_course' course.id %}">Edit</a>
         <a class="btn btn-primary btn-lg" href="{% url 'forms:delete_course' course.id %}">Delete</a>

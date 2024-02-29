@@ -1,4 +1,3 @@
-from typing import Any
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
 import requests
@@ -6,6 +5,7 @@ from django.http import HttpResponseServerError
 from django.views.generic.edit import FormView
 from django.views import View
 from .forms import AddCourseForm
+from decimal import Decimal
 
 class AddCourseView(FormView):
     template_name = 'add_new_course.html'
@@ -13,22 +13,16 @@ class AddCourseView(FormView):
     success_url = reverse_lazy('frontend_courses:course_list')
 
     def form_valid(self, form):
-        # Prepare data from the form
-        api_data = {
-            'name': form.cleaned_data['name'],
-            'description': form.cleaned_data['description'],
-            'instructor': form.cleaned_data['instructor'],
-            'price': form.cleaned_data['price'],
-            'duration': form.cleaned_data['duration'],
-            'published_date': form.cleaned_data['published_date'],
-        }
+        api_data = {key: str(value) if isinstance(value, Decimal) else value for key, value in form.cleaned_data.items()}
+        api_files = {field: (file.name, file, file.content_type) for field in ['course_image', 'course_video'] if (file := self.request.FILES.get(field))}
+        api_data.update(api_files)
 
-        # Send a POST request to the API to add the data
-        response = requests.post("http://127.0.0.1:8000/api/items/", data=api_data)
+        response = requests.post("http://127.0.0.1:8000/api/items/", data=api_data, files=api_files)
 
-        if response.status_code == 201:  # Assuming the API returns 201 for successful creation
+        if response.status_code == 201:
             return super().form_valid(form)
         else:
+            print(response.status_code, response.content)
             return HttpResponseServerError('An error occurred while adding the course')
         
 class EditCourseView(View):
@@ -46,21 +40,22 @@ class EditCourseView(View):
             return redirect('error_page')
 
     def post(self, request, pk):
-
         response = requests.get(self.api_url.format(pk))
         if response.status_code == 200:
             data = response.json()
-            form = AddCourseForm(request.POST, initial=data)  
+            form = AddCourseForm(request.POST, request.FILES, initial=data)  
             if form.is_valid():
-      
-                form_data = form.cleaned_data  
-                update_response = requests.put(self.api_url.format(pk), data=form_data)
+                
+                form_data = {key: str(value) if isinstance(value, Decimal) else value for key, value in form.cleaned_data.items()}
+                form_files = {field: (file.name, file, file.content_type) for field in ['course_image', 'course_video'] if (file := request.FILES.get(field))}
+                form_data.update(form_files)
+                
+                update_response = requests.put(self.api_url.format(pk), data=form_data, files=form_files)
                 if update_response.status_code == 200:
                     return redirect('frontend_courses:course_list')  
                 else:
                     return HttpResponseServerError('An error occurred')
             else:
-               
                 return render(request, self.template_name, {'form': form})
         else:
             return HttpResponseServerError('An error occurred')
