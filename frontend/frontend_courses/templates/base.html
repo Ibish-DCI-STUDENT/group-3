@@ -17,8 +17,19 @@
                 <img src="{% static '/img/logo.webp' %}" alt="Coursetopia logo">
             </a>
         </div>
-        {% if user.is_authenticated %} 
-        Welcome  {{ user.username }}
+
+        {% if user.is_authenticated %}
+        <nav class="navbar-right">
+            <ul>
+                Welcome {{ user.username }}
+                <li><a href="{% url 'accounts:my_profile' %}">My profile</a></li>
+                <li><a href="{% url 'accounts:edit_profile' %}">Edit profile</a></li>
+                <li><a href="{% url 'accounts:purchased_list' %}">My courses</a></li>
+
+            </ul>
+        </nav>
+
+
         <nav class="navbar-right">
             <ul>
 
@@ -32,18 +43,18 @@
                     </form>
                 </li>
 
-            {% else %}
+                {% else %}
                 <li><a href="{% url 'login' %}">Log In</a></li>
-                <li><a href="{% url 'signup' %}">Sign Up</a></li>
-            {% endif %}
-                
+                <li><a href="{% url 'accounts:signup' %}">Sign Up</a></li>
+                {% endif %}
+
 
             </ul>
         </nav>
     </header>
 
     {% block home %}{% endblock %}
-    
+
 
     {% block list %}{% endblock %}
     {% block details %}{% endblock %}
