@@ -27,7 +27,7 @@ class AddCourseView(FormView):
         
 class EditCourseView(View):
     template_name = 'edit_course.html'
-    api_url = 'http://127.0.0.1:8000/api/items/{}/'  # Replace with your API URL
+    api_url = 'http://127.0.0.1:8000/api/items/{}/'
 
     def get(self, request, pk):
         # Fetch data from the API

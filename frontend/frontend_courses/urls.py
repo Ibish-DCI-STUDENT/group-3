@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import HomeView, CourseList, DetailView, VideoTemplate
 
-app_name = "frontend_courses"  # This is the namespace, needed in urls.py of it_courses
+app_name = "frontend_courses"
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),

@@ -9,46 +9,50 @@
 
     <p>Here are the details for the course:</p>
     {% if course.course_image %}
-        <img src="{{ course.course_image }}" alt="{{ course.name }}" class="course-image" width="300" height="200">
+    <img src="{{ course.course_image }}" alt="{{ course.name }}" class="course-image" width="300" height="200">
 
 
     {% else %}
-        <p>No image available</p>
+    <p>No image available</p>
     {% endif %}
 
-{% if course.course_video %}
+    {% if course.course_video %}
     <!-- Update the link to include the course ID -->
     <div class="video-button">
         <a href="{% url 'frontend_courses:video_template' course.id %}" class="btn btn-primary">Watch Video</a>
     </div>
-{% else %}
+    {% else %}
     <p>No video available</p>
-{% endif %}
+    {% endif %}
 
     <h2>{{ course.name }}</h2>
     <p>{{ course.description }}</p>
     {% if course.is_free %}
-        <p>Is Free</p>
+    <p>Is Free</p>
     {% else %}
-        <p>Cost: {{ course.price }}€</p>
+    <p>Cost: {{ course.price }}€</p>
     {% endif %}
     <p>Instructor: {{ course.instructor }}</p>
     <p>Duration: {{ course.duration }}</p>
     <p>Published on: {{course.published_date}}</p>
-   <p>Course Rating: 
-    {% for i in stars_range %}
-        {% if i <= course.course_rating|default:"0"|add:0 %}
-            <span>&#9733;</span> <!-- filled star -->
-        {% else %}
+    <p>Course Rating:
+        {% for i in stars_range %}
+        {% if i <= course.course_rating|default:"0"|add:0 %} <span>&#9733;</span> <!-- filled star -->
+            {% else %}
             <span>&#9734;</span> <!-- empty star -->
-        {% endif %}
-    {% endfor %}
-</p>
-</p>
+            {% endif %}
+            {% endfor %}
+    </p>
+    </p>
 
     {% if request.user.is_staff %}
-        <a class="btn btn-primary btn-lg" href="{% url 'forms:edit_course' course.id %}">Edit</a>
-        <a class="btn btn-primary btn-lg" href="{% url 'forms:delete_course' course.id %}">Delete</a>
-    {% endif %}
+    <a class="btn btn-primary btn-lg" href="{% url 'forms:edit_course' course.id %}">Edit</a>
+    <a class="btn btn-primary btn-lg" href="{% url 'forms:delete_course' course.id %}">Delete</a>
+    {% else %}
+    <form action="{% url 'accounts:complete_order' course.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary btn-lg">Buy</button>
+    </form>
 </section>
+{% endif %}
 {% endblock %}
