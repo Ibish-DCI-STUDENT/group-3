@@ -8,6 +8,7 @@ import json
 import requests
 from .models import CustomUser
 from .forms import CustomUserChangeForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
@@ -123,3 +124,9 @@ class ProfileView(ListView):
 
     def get_queryset(self):
         return CustomUser.objects.filter(pk=self.request.user.pk)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = context['object_list'].first()  
+        context['profile'] = profile
+        return context
