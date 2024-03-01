@@ -27,14 +27,15 @@ class AddCourseView(FormView):
         
 class EditCourseView(View):
     template_name = 'edit_course.html'
-    api_url = 'http://127.0.0.1:8000/api/items/{}/'  # Replace with your API URL
+    api_url = 'http://127.0.0.1:8000/api/items/{}/'
 
     def get(self, request, pk):
-        # Fetch data from the API
         response = requests.get(self.api_url.format(pk))
         if response.status_code == 200:
             data = response.json()
-            form = AddCourseForm(initial=data)  # Populate the form with fetched data
+            # Convert Decimal fields to strings in the initial data
+            data = {key: str(value) if isinstance(value, Decimal) else value for key, value in data.items()}
+            form = AddCourseForm(initial=data)
             return render(request, self.template_name, {'form': form})
         else:
             return redirect('error_page')
@@ -43,22 +44,25 @@ class EditCourseView(View):
         response = requests.get(self.api_url.format(pk))
         if response.status_code == 200:
             data = response.json()
-            form = AddCourseForm(request.POST, request.FILES, initial=data)  
+            form = AddCourseForm(request.POST, request.FILES, initial=data)
+            
             if form.is_valid():
-                
                 form_data = {key: str(value) if isinstance(value, Decimal) else value for key, value in form.cleaned_data.items()}
-                form_files = {field: (file.name, file, file.content_type) for field in ['course_image', 'course_video'] if (file := request.FILES.get(field))}
-                form_data.update(form_files)
                 
+                # Update the form_data with files from the request if they exist
+                form_files = {field: request.FILES.get(field) for field in ['course_image', 'course_video']}
+                form_data.update(form_files)
+
                 update_response = requests.put(self.api_url.format(pk), data=form_data, files=form_files)
                 if update_response.status_code == 200:
-                    return redirect('frontend_courses:course_list')  
+                    return redirect('frontend_courses:course_list')
                 else:
                     return HttpResponseServerError('An error occurred')
             else:
                 return render(request, self.template_name, {'form': form})
         else:
             return HttpResponseServerError('An error occurred')
+
         
 class DeleteCourseView(View):
     template_name = 'delete_course.html'
