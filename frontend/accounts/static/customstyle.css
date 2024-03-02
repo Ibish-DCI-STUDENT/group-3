@@ -1,17 +1,17 @@
- @font-face {
-    font-family: Poppins;
-    src: url(./fonts/Poppins-Regular.ttf);
- }
+@font-face {
+   font-family: Poppins;
+   src: url(./fonts/Poppins-Regular.ttf);
+}
 
- body {
-    font-family: Poppins;
-    margin: 0;
-    background-image: url("/static/img/bg.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    color: white;
- }
+body {
+   font-family: Poppins;
+   margin: 0;
+   background-image: url("/static/img/bg.jpg");
+   background-size: cover;
+   background-repeat: no-repeat;
+   background-attachment: fixed;
+   color: white;
+}
 
 .navbar {
    display: flex;
@@ -25,6 +25,33 @@
    margin-bottom: 35px;
    z-index: 100;
    color: white;
+   height: 60px;
+}
+
+.navbar-left {
+   display: flex;
+   align-items: center;
+}
+
+.navbar img {
+   width: 40px;
+   margin-right: 5px;
+   filter: invert(100%);
+}
+
+.webpage-name {
+   font-size: 20px;
+   font-weight: bold;
+}
+
+.navbar-right ul,
+.navbar-right-logged-out ul{
+   display: flex;
+   list-style: none;
+   text-decoration: none;
+   margin: 0;
+   padding: 0;
+   align-items: center;
 }
 
 .navbar a {
@@ -33,50 +60,41 @@
    padding: 10px;
 }
 
+.navbar-right li {
+   margin-right: 10px;
+}
+
 .navbar a:hover {
    text-decoration: underline;
 }
 
-.navbar img {
-   width: 45px;
-   color: white;
-   filter: invert(100%);
-}
+.btn-primary {
+   margin-top: -5px;
+} 
 
-.navbar-left {
-   margin-right: 10px;
-}
 
-.navbar-right ul {
-   display: flex;
-   list-style: none;
-   text-decoration: none;
-   margin: 0;
-   padding: 0;
-}
-
-.home-section {
+.home-section,
+.list-section,
+.details-section,
+.container,
+.form-section {
    background-color: rgba(0, 0, 0, 0.3);
    backdrop-filter: blur(15px);
    border-radius: 10px;
-   max-width: 600px;
+   max-width: 650px;
    margin: 0 auto;
    padding: 20px;
    margin-bottom: 20px;
    color: white;
 }
 
-.list-section {
-   background-color: rgba(0, 0, 0, 0.3);
-   backdrop-filter: blur(15px);
-   border-radius: 10px;
-   max-width: 600px;
-   margin: 0 auto;
-   padding: 20px;
-   margin-bottom: 20px;
-   color: white;
+.container button {
+   margin-top: 15px;
 }
 
+.list-section p {
+   margin-top: 15px;
+}
 
 .list-section a {
    color: white;
@@ -87,13 +105,23 @@
    text-decoration: underline;
 }
 
-.details-section {
+.video {
    background-color: rgba(0, 0, 0, 0.3);
    backdrop-filter: blur(15px);
    border-radius: 10px;
-   max-width: 600px;
+   max-width: 839px;
    margin: 0 auto;
    padding: 20px;
    margin-bottom: 20px;
    color: white;
 }
+
+.course-pair {
+   margin-top: 25px; 
+}
+
+.course-pair h2,
+.course-block h2 {
+   margin-top: 15px; 
+}
+
