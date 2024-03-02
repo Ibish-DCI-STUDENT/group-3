@@ -124,3 +124,8 @@ body {
 .course-block h2 {
    margin-top: 15px; 
 }
+
+.test-section {
+   background-color: salmon;
+   color: turquoise;
+}

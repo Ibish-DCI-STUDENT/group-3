@@ -76,7 +76,7 @@ body {
 .home-section,
 .list-section,
 .details-section,
-.container,
+.container
 .form-section {
    background-color: rgba(0, 0, 0, 0.3);
    backdrop-filter: blur(15px);
@@ -125,3 +125,7 @@ body {
    margin-top: 15px; 
 }
 
+.test-section {
+   background-color: salmon;
+   color: turquoise;
+}
