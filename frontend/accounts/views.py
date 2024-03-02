@@ -108,7 +108,7 @@ class EditProfileView(View):
     
     def post(self, request):
         user = request.user
-        form = CustomUserChangeForm(request.POST, instance=user)
+        form = CustomUserChangeForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
             return redirect('frontend_courses:home')  

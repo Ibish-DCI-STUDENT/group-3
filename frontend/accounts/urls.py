@@ -19,3 +19,4 @@ urlpatterns = [
     path('my_profile/', ProfileView.as_view(), name='my_profile'),
 
 ]
+

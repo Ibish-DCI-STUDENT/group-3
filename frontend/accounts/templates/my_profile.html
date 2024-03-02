@@ -10,11 +10,16 @@
     <p><strong>Username:</strong> {{ profile.username }}</p>
     <p><strong>Email:</strong> {{ profile.email }}</p>
     <p><strong>Name:</strong> {{ profile.name }}</p>
-    <p><strong>Purchased Course{{ user.purchased_courses }}
-    
+    <p><strong>Last Name:</strong> {{ profile.last_name }}</p>
+    <p><strong>Address:</strong> {{ profile.address }}</p>
+    <p><strong>Phone Number:</strong> {{ profile.phone_number }}</p>
+
+{% if profile.profile_image %}
+    <img src="{{ profile.profile_image.url }}" alt="Profile Image">
+{% else %}
+    <p>No profile image available</p>
+{% endif %}
    
 </div>
-
-    </div>
 </section>
 {% endblock %}
