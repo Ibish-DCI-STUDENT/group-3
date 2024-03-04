@@ -1,11 +1,13 @@
 from typing import Any
 from django.views.generic import TemplateView
 from django.urls import reverse
-from django.http import HttpResponse
-from django.shortcuts import render
-import json
 import requests
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect
+from django.views import View
+from django.http import HttpResponseBadRequest,HttpResponseNotFound
+from django.http import HttpResponseForbidden
+from django.contrib.auth.models import User
+from accounts.models import CustomUser
 
 
 class HomeView(TemplateView):
@@ -55,33 +57,63 @@ class CourseList(TemplateView):
         return context
 
 
-class DetailView(TemplateView):
+class DetailView(View):
     template_name = "course_details.html"
 
-    def get_context_data(self, course_id):
+    def get(self, request, course_id):
         url_home_page = reverse("frontend_courses:home")
         url_course_list = reverse("frontend_courses:course_list")
         response = requests.get("http://127.0.0.1:8000/api/items")
         data = response.json()
+
+        course_info = None
         for course in data:
-            if course["id"]==course_id:
-                course_info=course
-            else:
-                pass
-            
-        stars_range = range(1, 6)  # Add this line
-                    
-        # course_data = models.Course.objects.get(name=course_name)
-        context = {"url_home_page": url_home_page, "url_course_list": url_course_list, "course": course_info,"stars_range": stars_range,}
-        return context
+            if course["id"] == course_id:
+                course_info = course
+                break  # Exit the loop once the course is found
+
+        if course_info is None:
+            return HttpResponseNotFound("Course not found")  # Handle the case when the course is not found
+
+        stars_range = range(1, 6)
+
+        context = {
+            "url_home_page": url_home_page,
+            "url_course_list": url_course_list,
+            "course": course_info,
+            "stars_range": stars_range,
+            "comments": "Comments will be displayed here",
+            "ratings": "Ratings will be displayed here",
+        }
+        return render(request, self.template_name, context)
 
 
-# class UserInfo(TemplateView):
-#     template_name="user_info.html"
-    
-#     def get_context_data(self,user_fname):
-#         url_user_list= reverse("users:users_list")
-#         url_home_page= reverse("users:home_page")
-#         user_data=models.Users.objects.get(first_name=user_fname)
-#         context={"url_home_page":url_home_page, "url_user_list":url_user_list, "user_data":user_data, "data":"classbased" }
-#         return context
+    def post(self, request, course_id):
+        if request.user.is_authenticated:
+            # Access form data
+            comment_text = request.POST.get('comments')
+            rating_value = request.POST.get('ratings')
+
+            # Use the currently logged-in user
+            comment_user = request.user
+            rating_user = request.user
+
+            # Save comments and ratings to the API
+            api_url_comment = f"http://127.0.0.1:8000/api/items/{course_id}/comments/"
+            api_data_comment = {'user': comment_user.pk, 'course': course_id, 'text': comment_text}
+            requests.post(api_url_comment, data=api_data_comment)
+
+            # Save ratings to the API
+            api_url_rating = f"http://127.0.0.1:8000/api/items/{course_id}/ratings/"
+            api_data_rating = {'user': rating_user.pk, 'course': course_id, 'value': rating_value}
+            requests.post(api_url_rating, data=api_data_rating)
+
+            api_url_rating = f"http://127.0.0.1:8000/api/items/{course_id}/ratings/"
+            api_data_rating = {'user': rating_user.pk, 'course': course_id, 'value': rating_value}
+            requests.post(api_url_rating, data=api_data_rating)
+
+            # Redirect to avoid resubmission
+            return redirect('frontend_courses:course_detail', course_id=course_id)
+        else:
+            # Handle the case when the user is not authenticated
+            return HttpResponseForbidden("You must be logged in to perform this action.")
