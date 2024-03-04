@@ -106,53 +106,21 @@
   <br>
   <p></p>
 
-  {% if request.user.is_authenticated %}
+{% if request.user.is_authenticated %}
     <div class="admin-actions">
-      <a class="btn btn-primary" href="{% url 'forms:edit_course' course.id %}">Edit</a>
-      <a class="btn btn-primary" href="{% url 'forms:delete_course' course.id %}">Delete</a>
-    </div>
-  {% else %}
-    <form action="{% url 'accounts:complete_order' course.id %}" method="post">
+    {% if not request.user.is_staff %}
+      <form action="{% url 'accounts:complete_order' course.id %}" method="post">
       {% csrf_token %}
       <button type="submit" class="btn btn-primary">Buy</button>
-    </form>
-    <hr> <!-- Horizontal line -->
+      </form>
+    {% endif %}
+{% endif %}
+  
 
-<div class="comments-section">
-  <h2>Comments</h2>
-  <!-- Display Rating -->
-  <p>Rating: {{ course.rating.value }}</p>
-
-  <!-- Display Likes with stars -->
-  {% if course.likes %}
-    <p>Likes:</p>
-    <ul>
-      {% for like in course.likes %}
-        {% if like.user == request.user %}
-          <li>{{ like.user }} (You) - ⭐</li>
-        {% else %}
-          <li>{{ like.user }} - ⭐</li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No likes yet.</p>
-  {% endif %}
-
-  <!-- Display Comments -->
-  {% if course.comments %}
-    <ul>
-      {% for comment in course.comments %}
-        <li>
-          {{ comment.user }}: {{ comment.text }}
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No comments yet.</p>
-  {% endif %}
-
-  {% endif %}
-</section>
+{% if request.user.is_staff %}
+      <a class="btn btn-primary" href="{% url 'forms:edit_course' course.id %}">Edit</a>
+      <a class="btn btn-primary" href="{% url 'forms:delete_course' course.id %}">Delete</a>
+{% endif %}
+  
 
 {% endblock details %}
