@@ -98,7 +98,7 @@ class LearnPageView(TemplateView):
     
 
 class EditProfileView(View):
-    template_name = 'edit_course.html'
+    template_name = 'edit_profile.html'
     
     def get(self, request):
         user = request.user

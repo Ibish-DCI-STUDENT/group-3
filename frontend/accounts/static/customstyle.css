@@ -135,3 +135,16 @@ body {
    background-color: rgb(234, 114, 250);
    color: turquoise;
 }
+
+
+.details-section
+.form-section {
+   background-color: rgba(0, 0, 0, 0.3);
+   backdrop-filter: blur(15px);
+   border-radius: 10px;
+   max-width: 650px;
+   margin: 0 auto;
+   padding: 20px;
+   margin-bottom: 20px;
+   color: white;
+}
