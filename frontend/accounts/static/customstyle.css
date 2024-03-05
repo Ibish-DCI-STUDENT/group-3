@@ -1,0 +1,137 @@
+@font-face {
+   font-family: Poppins;
+   src: url(./fonts/Poppins-Regular.ttf);
+}
+
+body {
+   font-family: Poppins;
+   margin: 0;
+   background-image: url("/static/img/bg.jpg");
+   background-size: cover;
+   background-repeat: no-repeat;
+   background-attachment: fixed;
+   color: white;
+}
+
+.navbar {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   background-color: rgba(0, 0, 0, 0.3);
+   backdrop-filter: blur(15px);
+   position: sticky;
+   top: 0;
+   width: 100%;
+   margin-bottom: 35px;
+   z-index: 100;
+   color: white;
+   height: 60px;
+}
+
+.navbar-left {
+   display: flex;
+   align-items: center;
+}
+
+.navbar img {
+   width: 40px;
+   margin-right: 5px;
+   filter: invert(100%);
+}
+
+.webpage-name {
+   font-size: 20px;
+   font-weight: bold;
+}
+
+.navbar-right ul,
+.navbar-right-logged-out ul{
+   display: flex;
+   list-style: none;
+   text-decoration: none;
+   margin: 0;
+   padding: 0;
+   align-items: center;
+}
+
+.navbar a {
+   color: white;
+   text-decoration: none;
+   padding: 10px;
+}
+
+.navbar-right li {
+   margin-right: 10px;
+}
+
+.navbar a:hover {
+   text-decoration: underline;
+}
+
+.btn-primary {
+   margin-top: -5px;
+} 
+
+
+.home-section,
+.account-section,
+.list-section,
+.details-section,
+.container
+.form-section {
+   background-color: rgba(0, 0, 0, 0.3);
+   backdrop-filter: blur(15px);
+   border-radius: 10px;
+   max-width: 650px;
+   margin: 0 auto;
+   padding: 20px;
+   margin-bottom: 20px;
+   color: white;
+}
+
+.container button {
+   margin-top: 15px;
+}
+
+.list-section p {
+   margin-top: 15px;
+}
+
+.list-section a {
+   color: white;
+   text-decoration: none;
+}
+
+.list-section a:hover {
+   text-decoration: underline;
+}
+
+.form-group {
+   margin-top: 15px;
+}
+
+.video {
+   background-color: rgba(0, 0, 0, 0.3);
+   backdrop-filter: blur(15px);
+   border-radius: 10px;
+   max-width: 839px;
+   margin: 0 auto;
+   padding: 20px;
+   margin-bottom: 20px;
+   color: white;
+}
+
+.course-pair {
+   margin-top: 25px; 
+}
+
+.course-pair h2,
+.course-block h2 {
+   margin-top: 15px; 
+}
+
+
+.test-section {
+   background-color: rgb(234, 114, 250);
+   color: turquoise;
+}

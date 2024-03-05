@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block list %}
+<link rel="stylesheet" href="{% static 'customstyle.css' %}">
+
+<section class="list-section">
+    <h1>Course List</h1>
+    {% if request.user.is_staff %}
+        <a class="btn btn-primary btn-lg" href="{% url 'forms:add_new_course'  %}">Add new course</a>
+    {% endif %}
+    <p>Here are all the available courses:</p>
+    <ul>
+        {% for course in course_list %}
+        <li><a href="{% url 'frontend_courses:course_detail' course.id %}">{{ course.name }}</a></li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

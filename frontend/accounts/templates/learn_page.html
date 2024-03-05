@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block details %}
+<link rel="stylesheet" href="{% static 'customstyle.css' %}">
+
+<section class="details-section">
+    <h1>{{ course.name }}</h1>
+    {% if course.course_image %}
+    <img src="{{ course.course_image }}" alt="{{ course.name }}" class="course-image" width="300" height="200">
+
+
+    {% else %}
+    <p>No image available</p>
+    {% endif %}
+
+    {% if course.course_video %}
+    <!-- Update the link to include the course ID -->
+    <div class="video-button">
+        <a href="{% url 'frontend_courses:video_template' course.id %}" class="btn btn-primary">Watch Video</a>
+    </div>
+    {% else %}
+    <p>No video available</p>
+    {% endif %}
+
+    <p>{{ course.description }}</p>
+    <p>Instructor: {{ course.instructor }}</p>
+    <p>Duration: {{ course.duration }}</p>
+    <p>Published on: {{course.published_date}}</p>
+
+</section>
+{% endblock %}

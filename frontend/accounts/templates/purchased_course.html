@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block list %}
+<link rel="stylesheet" href="{% static 'customstyle.css' %}">
+
+<section class="list-section">
+    <p>Thank you!</p>
+    <a class="btn btn-primary btn-lg" herf="{% url 'accounts:purchased_list' %}">Go to learn</a>
+</section>
+{% endblock %}

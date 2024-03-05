@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block list %}
+<link rel="stylesheet" href="{% static 'customstyle.css' %}">
+
+<section class="list-section">
+    <h1>Course List</h1>
+    <p>Your courses:</p>
+    <ul>
+        {% for course in course_list %}
+        <li><a href="{% url 'accounts:learn_page' course.id %}">{{ course.name }}</a></li>
+        {% endfor %}
+    </ul>
+
+</section>
+{% endblock %}

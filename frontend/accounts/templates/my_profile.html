@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'customstyle.css' %}">
+
+<section class="details-section">
+    <h1>My profile</h1>
+
+<div class="profile-image">
+    {% if profile.profile_image %}
+    <img src="{{ profile.profile_image.url }}" alt="Profile Image" class="img-fluid smaller-profile-image" style="width: 200px; height: 200px;">
+{% else %}
+    <p>No profile image available</p>
+{% endif %}
+</div>
+
+<div class="profile-info">
+    <p><strong>Username:</strong> {{ profile.username }}</p>
+    <p><strong>Email:</strong> {{ profile.email }}</p>
+    <p><strong>Name:</strong> {{ profile.name }}</p>
+    <p><strong>Last Name:</strong> {{ profile.last_name }}</p>
+    <p><strong>Address:</strong> {{ profile.address }}</p>
+    <p><strong>Phone Number:</strong> {{ profile.phone_number }}</p>
+
+
+   
+</div>
+</section>
+{% endblock %}
