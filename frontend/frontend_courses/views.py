@@ -4,10 +4,12 @@ from django.urls import reverse
 import requests
 from django.shortcuts import render, redirect
 from django.views import View
-from django.http import HttpResponseBadRequest,HttpResponseNotFound
+from django.http import HttpResponseRedirect,HttpResponseNotFound
 from django.http import HttpResponseForbidden
 from django.contrib.auth.models import User
-from accounts.models import CustomUser
+from accounts.models import CustomUser, Comment, Rate
+from accounts.forms import CommentForm
+from django.db.models import Avg
 
 
 class HomeView(TemplateView):
@@ -77,43 +79,43 @@ class DetailView(View):
 
         stars_range = range(1, 6)
 
+        comment_form = CommentForm()
+        comments = Comment.objects.filter(course=course_id)
+
+        average_rating = Rate.objects.filter(course=course_id).aggregate(avg_rating=Avg('rating'))['avg_rating']
+
+        user_has_rated = Rate.objects.filter(course=course_id, user=self.request.user).exists()
+        total_ratings = Rate.objects.filter(course=course_id).count()
+
+        if average_rating is not None:
+            average_rating = round(average_rating, 1)
+        else:
+            average_rating = 0.0
+
         context = {
             "url_home_page": url_home_page,
             "url_course_list": url_course_list,
             "course": course_info,
             "stars_range": stars_range,
-            "comments": "Comments will be displayed here",
-            "ratings": "Ratings will be displayed here",
+            "comments": comments,
+            "average_rating": average_rating,
+            'user_has_rated': user_has_rated,
+            "form": comment_form,
+            "total_ratings": total_ratings,
+
         }
         return render(request, self.template_name, context)
 
 
-    def post(self, request, course_id):
-        if request.user.is_authenticated:
-            # Access form data
-            comment_text = request.POST.get('comments')
-            rating_value = request.POST.get('ratings')
+    def post(self, request, *args, **kwargs):
 
-            # Use the currently logged-in user
-            comment_user = request.user
-            rating_user = request.user
-
-            # Save comments and ratings to the API
-            api_url_comment = f"http://127.0.0.1:8000/api/items/{course_id}/comments/"
-            api_data_comment = {'user': comment_user.pk, 'course': course_id, 'text': comment_text}
-            requests.post(api_url_comment, data=api_data_comment)
-
-            # Save ratings to the API
-            api_url_rating = f"http://127.0.0.1:8000/api/items/{course_id}/ratings/"
-            api_data_rating = {'user': rating_user.pk, 'course': course_id, 'value': rating_value}
-            requests.post(api_url_rating, data=api_data_rating)
-
-            api_url_rating = f"http://127.0.0.1:8000/api/items/{course_id}/ratings/"
-            api_data_rating = {'user': rating_user.pk, 'course': course_id, 'value': rating_value}
-            requests.post(api_url_rating, data=api_data_rating)
-
-            # Redirect to avoid resubmission
-            return redirect('frontend_courses:course_detail', course_id=course_id)
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
+                comment.user = request.user
+                comment.course = kwargs['course_id']
+                comment.save()
+                return HttpResponseRedirect(reverse("accounts:learn_page", kwargs={"pk": kwargs['course_id']}))
         else:
-            # Handle the case when the user is not authenticated
-            return HttpResponseForbidden("You must be logged in to perform this action.")
+
+            return super().post(request, *args, **kwargs)

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block details %}
 <link rel="stylesheet" href="{% static 'customstyle.css' %}">
@@ -8,8 +9,6 @@
     <h1>{{ course.name }}</h1>
     {% if course.course_image %}
     <img src="{{ course.course_image }}" alt="{{ course.name }}" class="course-image" width="300" height="200">
-
-
     {% else %}
     <p>No image available</p>
     {% endif %}
@@ -26,7 +25,50 @@
     <p>{{ course.description }}</p>
     <p>Instructor: {{ course.instructor }}</p>
     <p>Duration: {{ course.duration }}</p>
-    <p>Published on: {{course.published_date}}</p>
+    <p>Published on: {{ course.published_date }}</p>
 
+    <div class="ratings-section">
+        <h2>Ratings</h2>
+        {% if average_rating %}
+        <p>{{ average_rating }} stars (rated by {{ total_ratings }} users)</p>
+        {% else %}
+        <p>No ratings yet.</p>
+        {% endif %}
+    </div>
+
+    <div class="course-details">
+        <!-- Display Comments -->
+        <div class="comments-section">
+            <h2>Comments</h2>
+            <ul>
+                {% for comment in comments %}
+                <li>
+                    <span style="font-family: 'Bolt', sans-serif; font-weight: bold;">{{ comment.user }}</span>:
+                    <span>{{ comment.comment}}</span>
+                    <span style="font-style: italic;">{{ comment.created_at }}</span>
+                </li>
+                {% empty %}
+                <li>No comments yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <h3>Add a comment</h3>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ comment_form|crispy }}
+            <input name="comment_submit" class="btn btn-primary" type="submit" value="Save">
+        </form>
+
+        {% if not user_has_rated %}
+        <h3>Rate this course from 1 to 5</h3>
+        <p>(where 1 is very poor and 5 is excellent)</p>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ rate_form|crispy }}
+            <input name="rate_submit" class="btn btn-primary" type="submit" value="Save">
+        </form>
+        {% endif %}
+    </div>
 </section>
 {% endblock %}

@@ -3,12 +3,14 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, View, TemplateView, UpdateView
 from .forms import CustomUserCreationForm
 from django.shortcuts import render, redirect
-from django.http import HttpResponseServerError
+from django.http import HttpResponseServerError, HttpResponseRedirect
 import json
 import requests
-from .models import CustomUser
+from .models import CustomUser, Comment, Rate
 from .forms import CustomUserChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import CommentForm, RateForm
+from django.db.models import Avg
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
@@ -88,13 +90,67 @@ class LearnPageView(TemplateView):
             if course["id"] == course_id:
                 course_info = course
                 break  
+
+        comment_form = CommentForm()
+        rate_form = RateForm()
+        comments = Comment.objects.filter(course=course_id)
+        average_rating = Rate.objects.filter(course=course_id).aggregate(avg_rating=Avg('rating'))['avg_rating']
+
+        user_has_rated = Rate.objects.filter(course=course_id, user=self.request.user).exists()
+        total_ratings = Rate.objects.filter(course=course_id).count()
+
+        if average_rating is not None:
+            average_rating = round(average_rating, 1)
+        else:
+            average_rating = 0.0
         
         context = {
             "url_home_page": url_home_page, 
             "url_course_list": url_course_list, 
             "course": course_info,
+            "comments": comments,
+            "average_rating": average_rating,
+            'user_has_rated': user_has_rated,
+            "rate_form": rate_form,
+            "comment_form": comment_form,
+            "total_ratings": total_ratings
+            
         }
         return context
+    
+    def post(self, request, *args, **kwargs):
+        if "comment_submit" in request.POST:
+            comment_form = CommentForm(request.POST)
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
+                comment.user = request.user
+                comment.course = kwargs['pk']
+                comment.save()
+                return HttpResponseRedirect(reverse("accounts:learn_page", kwargs={"pk": kwargs['pk']}))
+            else:
+                # Handle invalid form submission for comments
+                context = self.get_context_data(**kwargs)
+                context["comment_form"] = comment_form
+                return self.render_to_response(context)
+
+        elif "rate_submit" in request.POST:
+            rate_form = RateForm(request.POST)
+            if rate_form.is_valid():
+                rating = rate_form.save(commit=False)
+                rating.user = request.user
+                rating.course = kwargs['pk']
+                rating.save()
+                return HttpResponseRedirect(reverse("accounts:learn_page", kwargs={"pk": kwargs['pk']}))
+            else:
+                # Handle invalid form submission for rating
+                context = self.get_context_data(**kwargs)
+                context["rate_form"] = rate_form
+                return self.render_to_response(context)
+
+        else:
+            # If neither comment_submit nor rate_submit is in request.POST, handle as needed
+            return super().post(request, *args, **kwargs)
+
     
 
 class EditProfileView(View):

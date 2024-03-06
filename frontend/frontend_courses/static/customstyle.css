@@ -45,7 +45,7 @@ body {
 }
 
 .navbar-right ul,
-.navbar-right-logged-out ul{
+.navbar-right-logged-out ul {
    display: flex;
    list-style: none;
    text-decoration: none;
@@ -70,14 +70,13 @@ body {
 
 .btn-primary {
    margin-top: -5px;
-} 
+}
 
 
 .home-section,
 .list-section,
 .details-section,
-.container
-.form-section {
+.container .form-section {
    background-color: rgba(0, 0, 0, 0.3);
    backdrop-filter: blur(15px);
    border-radius: 10px;
@@ -121,12 +120,12 @@ body {
 }
 
 .course-pair {
-   margin-top: 25px; 
+   margin-top: 25px;
 }
 
 .course-pair h2,
 .course-block h2 {
-   margin-top: 15px; 
+   margin-top: 15px;
 }
 
 .video-button {
@@ -137,4 +136,8 @@ body {
 .test-section {
    background-color: rgb(234, 114, 250);
    color: turquoise;
+}
+
+.checked {
+   color: orange;
 }
